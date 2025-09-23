@@ -1,9 +1,12 @@
-﻿
-
-#include <iostream>
+﻿#include <iostream>
+#include <stdio.h>
+#include "GameManager.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    GameManager gameManager;
+    gameManager.InitializeMap();
+    gameManager.PrintMap();
+    gameManager.Clear();
 }
 

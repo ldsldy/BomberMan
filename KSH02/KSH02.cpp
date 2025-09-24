@@ -6,7 +6,7 @@ int main()
 {
     GameManager gameManager;
     gameManager.InitializeMap();
-    gameManager.PrintMap();
+    gameManager.StagePlay();
     gameManager.Clear();
 }
 

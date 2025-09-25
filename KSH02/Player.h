@@ -8,15 +8,23 @@ public:
 	~Player();
 
 
+	inline int ExpectedGetPosY() { return ExpectedPosY; }
+	inline int ExpectedGetPosX() { return ExpectedPosX; }
 	inline int GetPosX() { return PosX; }
 	inline int GetPosY() { return PosY; }
 	inline int GetHP() { return HP; }
 	
 	int TakeDamage(int indamage);
-	void PosXMove(int inPosX);
-	void PosYMove(int inPosY);
-
+	void PosXMove();
+	void PosYMove();
+	void ExpectedPosXMove(int inPosX);
+	void ExpectedPosYMove(int inPosY);
+	
+	bool isDead = false;
+	int UpgradeChance = 0;
 private:
+	int ExpectedPosX =1;
+	int ExpectedPosY =1;
 	int PosX = 1;
 	int PosY= 1;
 	int HP = 5;

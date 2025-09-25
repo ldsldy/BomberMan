@@ -8,17 +8,31 @@ Player::~Player()
 int Player::TakeDamage(int indamage)
 {
 	HP -= indamage;
+	if (HP <= 0) {
+		isDead = true;
+	}
+
 	return HP;
 }
 
-void Player::PosXMove(int inPosX)
+void Player::PosXMove()
 {
-	PosX += inPosX;
+	PosX = ExpectedPosX;
 }
 
-void Player::PosYMove(int inPosY)
+void Player::PosYMove()
 {
-	PosY += inPosY;
+	PosY  = ExpectedPosY;
+}
+
+void Player::ExpectedPosXMove(int inPosX)
+{
+	ExpectedPosX = inPosX+ PosX;
+}
+
+void Player::ExpectedPosYMove(int inPosY)
+{
+	ExpectedPosY = inPosY+ PosY;
 }
 
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 //stage1맵 이니셜라이즈
-void MapManager::InitializeMap()
+void MapManager::InitializeMap1()
 {
 
 	for (int i = 0; i < MapSize; i++) {
@@ -23,26 +23,29 @@ void MapManager::InitializeMap()
 	}
 }
 //stage2 이니셜라이즈
-//void MapManager::InitializeMap2()
-//{
-//
-//	for (int i = 0; i < MapSize; i++) {
-//		for (int j = 0; j < MapSize; j++) {
-//			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
-//				Map[i][j] = static_cast<int>(MTileState::Wall);
-//			}
-//			else if (i % 2 == 0 && j % 2 == 0) {
-//				Map[i][j] = static_cast<int>(MTileState::Wall);
-//			}
-//			else if (i % 2 != 0 && j % 2 == 0) {
-//				Map[i][j] = static_cast<int>(MTileState::SoftRock);
-//			}
-//			else {
-//				Map[i][j] = static_cast<int>(MTileState::Road);
-//			}
-//		}
-//	}
-//}
+void MapManager::InitializeMap2()
+{
+	
+	for (int i = 0; i < MapSize; i++) {
+		for (int j = 0; j < MapSize; j++) {
+			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
+				Map[i][j] = static_cast<int>(MTileState::Wall);
+			}
+			else if ((i == 3 || i == 7) && j % 2 == 0) {
+				Map[i][j] = static_cast<int>(MTileState::Wall);
+			}
+			else if ((i == 1 || i == 5 || i == 9) && j % 2 != 0) {
+				Map[i][j] = static_cast<int>(MTileState::Wall);
+			}
+			else if (i % 2 == 0 && j % 2 == 0) {
+				Map[i][j] = static_cast<int>(MTileState::SoftRock);
+			}
+			else {
+				Map[i][j] = static_cast<int>(MTileState::Road);
+			}
+		}
+	}
+}
 void MapManager::PrintMap(Player* player, Enemy* enemy)
 {
 	//플레이어 이동위치 동기화
@@ -59,7 +62,7 @@ void MapManager::PrintMap(Player* player, Enemy* enemy)
 				printf("■ ");
 			}
 			else if (Map[i][j] == static_cast<int>(MTileState::SoftRock)) {
-				printf("○ ");
+				printf("▣ ");
 			}
 			else if (Map[i][j] == static_cast<int>(MTileState::UnbreakableRock)) {
 				printf("● ");
@@ -124,24 +127,21 @@ void MapManager::TileStateChange(int posX,int posY, int TileState)
 
 }
 
-bool MapManager::CanMove(int posX, int posY)
+bool MapManager::CanMove(int posX, int posY) const
 {
 	bool CanMove = false;
 
-	if (Map[posY][posX] == static_cast<int>(MTileState::Wall) ||
-		Map[posY][posX] == static_cast<int>(MTileState::Bomb) ||
-		Map[posY][posX] == static_cast<int>(MTileState::Enemy) ||
-		Map[posY][posX] == static_cast<int>(MTileState::SoftRock)) {
-		CanMove = false;
+	if (Map[posY][posX] == static_cast<int>(MTileState::Road)) {
+		CanMove = true;
 	}
 	else {
-		CanMove = true;
+		CanMove = false;
 	}
 
 	return CanMove;
 }
 //폭탄이 부술수 없는곳 리턴
-bool MapManager::UnBreakable(int inPosX, int inPosY)
+bool MapManager::CanBreak(int inPosX, int inPosY) const
 {
 	bool CanBreak = true;
 	if (Map[inPosY][inPosX] == static_cast<int>(MTileState::Wall) ||
@@ -152,18 +152,18 @@ bool MapManager::UnBreakable(int inPosX, int inPosY)
 }
 
 
-bool MapManager::isPlayerHit(int inPosX, int inPosY)
+bool MapManager::isPlayerHit(int inPosX, int inPosY ,Player* player) const
 {
 	bool isHit = false;
 
-	if (Map[inPosY][inPosX] == static_cast<int>(MTileState::Player)) {
+	if ((player->ExpectedGetPosX() == inPosX)&& (player->ExpectedGetPosY() == inPosY)) {
 		isHit = true;
 	}
 
 	return isHit;
 }
 
-bool MapManager::isEnemyHit(int inPosX, int inPosY)
+bool MapManager::isEnemyHit(int inPosX, int inPosY) const
 {
 	bool isHit = false;
 	if (Map[inPosY][inPosX] == static_cast<int>(MTileState::Enemy)) {
@@ -173,7 +173,7 @@ bool MapManager::isEnemyHit(int inPosX, int inPosY)
 	return isHit;
 }
 
-bool MapManager::isBreakableHit(int inPosX, int inPosY)
+bool MapManager::isBreakableHit(int inPosX, int inPosY) const
 {
 	bool isHit = false;
 

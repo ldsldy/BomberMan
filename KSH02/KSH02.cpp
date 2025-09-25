@@ -5,8 +5,9 @@
 int main()
 {
     GameManager gameManager;
-    gameManager.InitializeMap();
-    gameManager.StagePlay();
+    //gameManager.InitializeMap();
+    //gameManager.StagePlay();
+    gameManager.StageMenu();
     gameManager.Clear();
 }
 

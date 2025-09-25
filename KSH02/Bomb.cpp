@@ -7,7 +7,6 @@ bool Bomb::isExplosive()
 		return true;
 	}
 	else {
-		ExplosiveTime--;
 		return false;
 	}
 }

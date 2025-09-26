@@ -22,7 +22,7 @@ public:
 	void InitializeMap1(Player* player,Enemy* enemy, Enemy* enemy2); // 초기맵생성
 	void InitializeMap2(Player* player,Enemy* enemy,Enemy* enemy2); // 초기맵생성
 	// 현재맵상태 프린트
-	void PrintMap(Player* player); 
+	void PrintMap(Player* player, Enemy* enemy1, Enemy* enemy2);
 	//플레이어,적 이동가능한곳인지
 	bool CanMove(int posX, int posY) const; 
 	//폭탄이 부술수있는곳인지

@@ -6,7 +6,7 @@ void MapManager::InitializeMap1(Player* player, Enemy* enemy, Enemy* enemy2)
 {
 	RemainEnemy = Stage1RemainEnemy;
 	player->setDefault(1,1);
-	enemy->setDefault(1,9);
+	enemy->setDefault(9,9);
 	enemy2->setDefault(5,1);
 	enemy->isDead = false;
 	enemy2->isDead = false;
@@ -62,7 +62,7 @@ void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 	Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
 	Map[enemy2->GetPosY()][enemy2->GetPosX()] = static_cast<int>(MTileState::Enemy);
 }
-void MapManager::PrintMap(Player* player)
+void MapManager::PrintMap(Player* player, Enemy* enemy1, Enemy* enemy2)
 {
 
 	printf("[현재 플레이어의 체력 : %d]\n", player->GetHP());

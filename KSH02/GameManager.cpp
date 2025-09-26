@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include <stdio.h>
+#include <stdlib.h>
 
 void GameManager::Clear()
 {
@@ -20,6 +21,7 @@ void GameManager::Clear()
 
 void GameManager::StagePlay(int StageNum)
 {
+	
 	//int 로 받으니 문자들어왔을때 무한루프
 	char PlayerSelect = -2;
 	if (StageNum == 1) {
@@ -35,10 +37,12 @@ void GameManager::StagePlay(int StageNum)
 	printf("모든적을 처치하세요\n");
 
 	while (!isStageClear && !isStageFail) {
-		mapManager.PrintMap(player);
-		printf("원하는 행동을 메뉴에 맞게 입력해주세요.\n");
-		printf("1.위 [W(w)] 2.아래 [S(s)]\n3.왼쪽 [A(a)] 4.오른쪽 [D(d)]\n");
-		printf("5.폭탄설치 [B(b)]\n6.스테이지 포기\n");
+		system("cls");
+		mapManager.PrintMap(player,enemy,enemy2);
+		printf("\n[행동 선택]\n");
+		printf(" (W) 위 │ (S) 아래 │ (A) 왼쪽 │ (D) 오른쪽\n");
+		printf(" (B) 폭탄 설치 │ (6) 스테이지 포기\n");
+		printf(" > ");
 		std::cin >> PlayerSelect;
 		KeyChange(PlayerSelect);
 		BombStateCheck();
@@ -73,13 +77,8 @@ void GameManager::StagePlay(int StageNum)
 		}
 		EnemyYMove(enemy);
 		EnemyYMove(enemy2);
-
 	}
-
-
-
 }
-
 
 void GameManager::EnemyYMove(Enemy* enemy)
 {
@@ -104,9 +103,6 @@ void GameManager::EnemyYMove(Enemy* enemy)
 			enemy->MoveDir = true;
 		}
 	}
-	
-	
-	
 }
 
 void GameManager::KeyChange(char& PlayerSelect)
@@ -242,15 +238,22 @@ void GameManager::PlaceBomb()
 
 void GameManager::StageMenu()
 {
-	//int 로 받으니 문자들어왔을때 무한루프
-	char MenuNumber = -2;
-	while (MenuNumber!=-1)
+	char MenuNumber = 0;
+	while (MenuNumber != -1)
 	{
+		system("cls"); // 메뉴 표시 전 화면 지우기
 		isStageClear = false;
 		isStageFail = false;
-		printf("봄버맨\n");
-		printf("[ 1. Stage1 2. Stage2 3.폭탄 업그레이드]\n");
-		printf("[ -1입력시 종료 ]\n");
+		printf("==================================================\n");
+		printf("##                 BOMBER MAN                 ##\n");
+		printf("==================================================\n");
+		printf("   [1] 스테이지 1 시작\n");
+		printf("   [2] 스테이지 2 시작\n");
+		printf("   [3] 업그레이드 (남은 횟수: %d)\n", player->UpgradeChance);
+		printf("   [-1] 게임 종료\n");
+		printf("--------------------------------------------------\n");
+		printf(" > ");
+
 		std::cin >> MenuNumber;
 		switch (MenuNumber) {
 		case '1': StagePlay(MenuNumber-'0');
@@ -276,13 +279,13 @@ void GameManager::StageMenu()
 			else {
 				printf("업그레이드 횟수가 부족합니다 : %d\n", player->UpgradeChance);
 			}
+			printf("계속하려면 엔터\n");
+			getchar(); getchar();
 			break;
 		default:
 			break;
 		}
 	}
-	
-
 }
 
 void GameManager::ExplosiveTileChange(Bomb* bomb)
@@ -424,7 +427,7 @@ bool GameManager::isHit(int inPosX, int inPosY)
 		printf("※스테이지 클리어!\n");
 		player->UpgradeChance++;
 		printf("업그레이드 횟수 : %d\n", player->UpgradeChance);
-		mapManager.PrintMap(player);
+		mapManager.PrintMap(player,enemy,enemy2);
 		printf("[ 계속하려면 엔터 ]\n");
 		// 버퍼에 남아있을 수 있는 개행 문자를 처리하기 위해 getchar()를 두 번 호출
 		getchar();

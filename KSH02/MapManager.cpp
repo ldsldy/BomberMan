@@ -137,11 +137,11 @@ bool MapManager::isPlayerHit(int inPosX, int inPosY ,Player* player) const
 	return isHit;
 }
 
-bool MapManager::isEnemyHit(int inPosX, int inPosY) const
+bool MapManager::isEnemyHit(int inPosX, int inPosY, Enemy* enemy) const
 {
 	bool isHit = false;
-	if (Map[inPosY][inPosX] == static_cast<int>(MTileState::Enemy)) {
-		isHit = true;
+	if (enemy && enemy->GetPosX() == inPosX && enemy->GetPosY() == inPosY) {
+		isHit =true;
 	}
 
 	return isHit;

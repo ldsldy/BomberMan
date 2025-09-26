@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include <iostream>
+#include <limits>
 #include <stdio.h>
 
 void GameManager::Clear()
@@ -19,6 +20,7 @@ void GameManager::Clear()
 
 void GameManager::StagePlay(int StageNum)
 {
+	//int 로 받으니 문자들어왔을때 무한루프
 	char PlayerSelect = -2;
 	if (StageNum == 1) {
 		mapManager.InitializeMap1(player, enemy, enemy2);
@@ -77,83 +79,7 @@ void GameManager::StagePlay(int StageNum)
 
 
 }
-//void GameManager::StagePlay(int StageNum)
-//{
-//	char PlayerSelect=-2;
-//	if (StageNum == 1) {
-//		mapManager.InitializeMap1(player,enemy,enemy2);
-//	}
-//	else if (StageNum == 2) {
-//		mapManager.InitializeMap2(player, enemy , enemy2);
-//	}
-//	
-//	printf("스테이지를 시작합니다 !!\n");
-//	printf("모든적을 처치하세요\n");
-//
-//	while (!isStageClear && !isStageFail) {
-//		mapManager.PrintMap(player);
-//		printf("원하는 행동을 메뉴에 맞게 입력해주세요.\n");
-//		printf("1.위 [W(w)] 2.아래 [S(s)]\n3.왼쪽 [A(a)] 4.오른쪽 [D(d)]\n");
-//		printf("5.폭탄설치 [B(b)]\n6.스테이지 포기\n");
-//		std::cin >> PlayerSelect;
-//		KeyChange(PlayerSelect);
-//		
-//		switch (PlayerSelect)
-//		{
-//		case 1:
-//			player->ExpectedPosYMove(-1);
-//			BombStateCheck();
-//			PlaceBomb();
-//			PlayerMoveYPlus();
-//			break;
-//		case 2:
-//			player->ExpectedPosYMove(+1);
-//			BombStateCheck();
-//			PlaceBomb();
-//			PlayerMoveYMinus();
-//			break;
-//		case 3:
-//			player->ExpectedPosXMove(-1);
-//			BombStateCheck();
-//			PlaceBomb();
-//			PlayerMoveXMinus();
-//			break;
-//		case 4:
-//			player->ExpectedPosXMove(+1);
-//			BombStateCheck();
-//			PlaceBomb();
-//			PlayerMoveXPlus();
-//
-//			break;
-//		case 5:
-//			//다음 이동직전에 폭탄이 깔리도록 bool OnBomb isPresentBomb true;
-//			//폭탄이 존재하면 안깔리도록  플레이어 최대폭탄수 1
-//			if (isPresentBomb || WasPresentBomb) {
-//				printf("설치가 불가능합니다. 이미 존재\n");
-//			}
-//			else {
-//				OnBomb = true; isPresentBomb = true;
-//				printf("현재 위치에 폭탄이 설치되었습니다.\n");
-//			}
-//			break;
-//		case 6:
-//			printf("스테이지 포기\n");
-//			isStageFail = true;
-//			break;
-//		default: printf("유효하지 않은 메뉴 번호입니다.\n");
-//			break;
-//		}
-//		if (!enemy->isDead) {
-//			EnemyYMove(enemy);
-//		}
-//		if (!enemy2->isDead) {
-//			EnemyYMove(enemy2);
-//		}
-//	}
-//
-//
-//	
-//}
+
 
 void GameManager::EnemyYMove(Enemy* enemy)
 {
@@ -203,8 +129,9 @@ void GameManager::KeyChange(char& PlayerSelect)
 	else {
 		PlayerSelect -= '0';
 	}
-
 }
+
+
 
 void GameManager::PlayerMoveXPlus()
 {
@@ -278,7 +205,7 @@ void GameManager::BombStateCheck()
 				ExplosiveTileChange(bomb);
 				bomb->state = Bomb::BombState::Exploding;
 			}
-			++it;
+			it++;
 		}
 		else if (bomb->state == Bomb::BombState::Exploding) {
 			bomb->ExplosiveRemoveTime--;
@@ -289,18 +216,18 @@ void GameManager::BombStateCheck()
 				player->currentBombs--;
 			}
 			else {
-				++it;
+				it++;
 			}
 		}
 		else {
-			++it;
+			it++;
 		}
 	}
 }
 void GameManager::PlaceBomb()
 {
 	if (player->currentBombs < player->maxBombs) {
-		Bomb* newBomb = new Bomb();
+		Bomb* newBomb = new Bomb(player->bombRange);
 		newBomb->PosX = player->GetPosX();
 		newBomb->PosY = player->GetPosY();
 		bombs.push_back(newBomb);
@@ -313,68 +240,41 @@ void GameManager::PlaceBomb()
 	}
 }
 
-
-//void GameManager::BombStateCheck()
-//{
-//
-//	if (isPresentBomb) {
-//		bomb->ExplosiveTime--;
-//		printf("[ 폭발 타이머 : %d ]\n", bomb->ExplosiveTime);
-//		if (bomb->isExplosive()) {
-//			ExplosiveTileChange(bomb->PosX, bomb->PosY);
-//			bomb->ExplosiveTime = bomb->DefaultExplosiveTime;
-//		}
-//	}
-//	
-//	if (WasPresentBomb) {
-//		bomb->ExplosiveRemoveTime--;
-//		printf("[ 폭발 제거타이머 : %d ]\n", bomb->ExplosiveRemoveTime);
-//		if (bomb->ExplosiveRemoveTime == 0) {
-//			ExplosiveTileRemove(bomb->PosX, bomb->PosY);
-//			bomb->ExplosiveRemoveTime = bomb->DefaultExplosiveRemoveTime;
-//		}
-//	}
-//}
-//
-//void GameManager::PlaceBomb()
-//{
-//	if (OnBomb) { //폭탄배치함수
-//		bomb->PosX = player->GetPosX(); //폭탄 XY 확정
-//		bomb->PosY = player->GetPosY();
-//		mapManager.Map[player->GetPosY()][player->GetPosX()] = static_cast<int>(MTileState::Bomb);
-//		OnBomb = false; // 타일 배치하고 폭탄 설치상태 트리거 False
-//	}
-//}
-//
 void GameManager::StageMenu()
 {
-	int MenuNumber = -2;
+	//int 로 받으니 문자들어왔을때 무한루프
+	char MenuNumber = -2;
 	while (MenuNumber!=-1)
 	{
 		isStageClear = false;
 		isStageFail = false;
 		printf("봄버맨\n");
-		printf("[ 1. Stage1 2. Stage2 3.폭탄 범위 업그레이드 ]\n");
+		printf("[ 1. Stage1 2. Stage2 3.폭탄 업그레이드]\n");
 		printf("[ -1입력시 종료 ]\n");
 		std::cin >> MenuNumber;
 		switch (MenuNumber) {
-		case 1: StagePlay(MenuNumber);
+		case '1': StagePlay(MenuNumber-'0');
 			break;
-		case 2: StagePlay(MenuNumber);
+		case '2': StagePlay(MenuNumber-'0');
 			break;
-		case 3: 
+		case '3': 
 			printf("현재 업그레이드 가능횟수는 : %d 입니다\n", player->UpgradeChance);
-			printf("업그레이드 횟수를 소모하여 폭탄범위를 업그레이드 하시겠습니까?\n");
-			printf("[ 1.Yes ] [ 2.NO ]\n");
+			printf("업그레이드 횟수를 소모하여 폭탄 범위를 업그레이드 하시겠습니까?\n");
+			printf("[ 1.폭탄 범위 증가 ] [ 2.최대 폭탄 개수 증가 ] [ 3.취소 ]\n");
 			std::cin >> MenuNumber;
-			if (MenuNumber == 1) {
-				if (player->UpgradeChance <= 0) {
-					printf("횟수가 부족합니다.\n");
-				}
-				else {
-					player->UpgradeChance--;
-					printf("범위가  가 되었습니다.\n");
-				}
+			if (MenuNumber == '1'&&player->UpgradeChance>0) {
+				// 플레이어의 bombRange를 증가시키고 UpgradeChance를 소모합니다.
+				player->bombRange++;
+				player->UpgradeChance--;
+				printf("폭탄 범위가 %d (으)로 업그레이드되었습니다.\n", player->bombRange);
+			}
+			else if (MenuNumber == '2'&& player->UpgradeChance > 0) {
+				player->maxBombs++;
+				player->UpgradeChance--;
+				printf("최대 폭탄 개수가 %d 가 되었습니다.\n", player->maxBombs);
+			}
+			else {
+				printf("업그레이드 횟수가 부족합니다 : %d\n", player->UpgradeChance);
 			}
 			break;
 		default:
@@ -387,25 +287,24 @@ void GameManager::StageMenu()
 
 void GameManager::ExplosiveTileChange(Bomb* bomb)
 {
-	changedTiles.clear();
 	int inPosX = bomb->PosX;
 	int inPosY = bomb->PosY;
 
 	if (mapManager.CanBreak(inPosX, inPosY)) {
 		isHit(inPosX, inPosY);
 		mapManager.Map[inPosY][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-		changedTiles.push_back({ inPosX, inPosY });
+		bomb->changedTiles.push_back({ inPosX, inPosY });
 	}
 
 	for (int i = 1; i <= bomb->ExplosiveRange; i++) {
 		if (mapManager.CanBreak(inPosX + i, inPosY)) {
 			if (isHit(inPosX + i, inPosY)) {
 				mapManager.Map[inPosY][inPosX + i] = static_cast<int>(MTileState::HitBombEffect);
-				changedTiles.push_back({ inPosX + i, inPosY });
+				bomb->changedTiles.push_back({ inPosX + i, inPosY });
 				break;
 			}
 			mapManager.Map[inPosY][inPosX + i] = static_cast<int>(MTileState::HitBombEffect);
-			changedTiles.push_back({ inPosX + i, inPosY });
+			bomb->changedTiles.push_back({ inPosX + i, inPosY });
 		}
 		else {
 			break;
@@ -415,11 +314,11 @@ void GameManager::ExplosiveTileChange(Bomb* bomb)
 		if (mapManager.CanBreak(inPosX - i, inPosY)) {
 			if (isHit(inPosX - i, inPosY)) {
 				mapManager.Map[inPosY][inPosX - i] = static_cast<int>(MTileState::HitBombEffect);
-				changedTiles.push_back({ inPosX - i, inPosY });
+				bomb->changedTiles.push_back({ inPosX - i, inPosY });
 				break;
 			}
 			mapManager.Map[inPosY][inPosX - i] = static_cast<int>(MTileState::HitBombEffect);
-			changedTiles.push_back({ inPosX - i, inPosY });
+			bomb->changedTiles.push_back({ inPosX - i, inPosY });
 		}
 		else {
 			break;
@@ -429,11 +328,11 @@ void GameManager::ExplosiveTileChange(Bomb* bomb)
 		if (mapManager.CanBreak(inPosX, inPosY + i)) {
 			if (isHit(inPosX, inPosY + i)) {
 				mapManager.Map[inPosY + i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-				changedTiles.push_back({ inPosX, inPosY + i });
+				bomb->changedTiles.push_back({ inPosX, inPosY + i });
 				break;
 			}
 			mapManager.Map[inPosY + i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-			changedTiles.push_back({ inPosX, inPosY + i });
+			bomb->changedTiles.push_back({ inPosX, inPosY + i });
 		}
 		else {
 			break;
@@ -443,11 +342,11 @@ void GameManager::ExplosiveTileChange(Bomb* bomb)
 		if (mapManager.CanBreak(inPosX, inPosY - i)) {
 			if (isHit(inPosX, inPosY - i)) {
 				mapManager.Map[inPosY - i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-				changedTiles.push_back({ inPosX, inPosY - i });
+				bomb->changedTiles.push_back({ inPosX, inPosY - i });
 				break;
 			}
 			mapManager.Map[inPosY - i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-			changedTiles.push_back({ inPosX, inPosY - i });
+			bomb->changedTiles.push_back({ inPosX, inPosY - i });
 		}
 		else {
 			break;
@@ -457,139 +356,80 @@ void GameManager::ExplosiveTileChange(Bomb* bomb)
 
 void GameManager::ExplosiveTileRemove(Bomb* bomb)
 {
-	for (const auto& tilePos : changedTiles) {
+	
+	for (const auto& tilePos : bomb->changedTiles) {
 		int x = tilePos.first;
 		int y = tilePos.second;
 		if (mapManager.Map[y][x] == static_cast<int>(MTileState::HitBombEffect)) {
 			mapManager.Map[y][x] = static_cast<int>(MTileState::Road);
 		}
 	}
-	changedTiles.clear();
+	bomb->changedTiles.clear(); 
 }
 
-//void GameManager::ExplosiveTileChange(int inPosX, int inPosY)
-//{
-//	changedTiles.clear(); // 이전 폭발 타일 목록 초기화
-//
-//	if (mapManager.CanBreak(inPosX, inPosY)) {
-//		isHit(inPosX, inPosY);
-//		mapManager.Map[inPosY][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-//		changedTiles.push_back({ inPosX, inPosY });
-//	}
-//
-//	for (int i = 1; i <= bomb->ExplosiveRange; i++) {
-//		if (mapManager.CanBreak(inPosX + i, inPosY)) {
-//			if (isHit(inPosX + i, inPosY)) {
-//				break;
-//			}
-//			mapManager.Map[inPosY][inPosX + i] = static_cast<int>(MTileState::HitBombEffect);
-//			changedTiles.push_back({ inPosX + i, inPosY });
-//		}
-//		else {
-//			break;
-//		}
-//	}
-//	for (int i = 1; i <= bomb->ExplosiveRange; i++) {
-//		if (mapManager.CanBreak(inPosX - i, inPosY)) {
-//			if (isHit(inPosX - i, inPosY)) {
-//				break;
-//			}
-//			mapManager.Map[inPosY][inPosX - i] = static_cast<int>(MTileState::HitBombEffect);
-//			changedTiles.push_back({ inPosX - i, inPosY });
-//			
-//		}
-//		else {
-//			break;
-//		}
-//	}
-//	for (int i = 1; i <= bomb->ExplosiveRange; i++) {
-//		if (mapManager.CanBreak(inPosX, inPosY + i)) {
-//			if (isHit(inPosX, inPosY + i)) {
-//				break;
-//			}
-//			mapManager.Map[inPosY + i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-//			changedTiles.push_back({ inPosX, inPosY + i });
-//		}
-//		else {
-//			break;
-//		}
-//	}
-//	for (int i = 1; i <= bomb->ExplosiveRange; i++) {
-//		if (mapManager.CanBreak(inPosX, inPosY - i)) {
-//			if (isHit(inPosX, inPosY - i)) {
-//				break;
-//			}
-//			mapManager.Map[inPosY - i][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-//			changedTiles.push_back({ inPosX, inPosY - i });
-//		}
-//		else {
-//			break;
-//		}
-//	}
-//
-//	isPresentBomb = false;
-//	WasPresentBomb = true;
-//}
-//
-//
-//void GameManager::ExplosiveTileRemove(int inPosX, int inPosY)
-//{
-//	if (bomb->ExplosiveRemoveTime <= 0) {
-//		for (const auto& tilePos : changedTiles) {
-//			int x = tilePos.first;
-//			int y = tilePos.second;
-//			// 해당 타일이 아직 폭발 효과 타일일 경우에만 길로 변경
-//			if (mapManager.Map[y][x] == static_cast<int>(MTileState::HitBombEffect)) {
-//				mapManager.Map[y][x] = static_cast<int>(MTileState::Road);
-//			}
-//		}
-//		changedTiles.clear(); // 타일 복구 후 목록 초기화
-//	}
-//
-//	WasPresentBomb = false;
-//}
-//	
 bool GameManager::isHit(int inPosX, int inPosY)
 {
-	bool isHit = false;
-	if (mapManager.isPlayerHit(inPosX, inPosY,player)) {
+	bool isBlockingHit = false; // 폭발이 벽이나 적에 막혔는지 확인하는 변수
+
+	// --- 1. 플레이어 피격 처리 ---
+	if (mapManager.isPlayerHit(inPosX, inPosY, player)) {
 		player->TakeDamage(1);
-		isHit = true;
 		printf("플레이어가 맞았습니다 : %d\n", player->GetHP());
 		if (player->isDead == true) {
-			player->isDead = false;
+			player->isDead = false; // 다음 스테이지를 위해 리셋
 			printf("스테이지 클리어 실패!\n");
 			isStageFail = true;
 		}
 	}
-	if (mapManager.isEnemyHit(inPosX, inPosY)) {
+
+	// --- 2. 적 피격 처리 ---
+	// 적 1
+	if (!enemy->isDead && mapManager.isEnemyHit(inPosX, inPosY, enemy)) {
 		enemy->TakeDamage(1);
-		isHit = true;
-		printf("[ 적이 맞았습니다 : %d ]\n", enemy->GetHP());
+		isBlockingHit = true;
+		printf("[ 적1이 맞았습니다 : %d ]\n", enemy->GetHP());
 		if (enemy->isDead == true) {
-			mapManager.Map[inPosY][inPosX] = static_cast<int>(MTileState::Road);
-			enemy->PosXMove(20);
-			enemy->PosYMove(20);
+			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Road);
+			enemy->isDead = false;
+			enemy->setDefault(20, 20); // 맵 밖으로 이동시켜 비활성화
 			mapManager.RemainEnemy--;
-			if (mapManager.RemainEnemy <= 0) {
-				printf("※모든 적을 처치했습니다\n");
-				printf("※스테이지 클리어!\n");
-				player->UpgradeChance++;
-				printf("업그레이드 횟수 : %d\n", player->UpgradeChance);
-				mapManager.PrintMap(player);
-				printf("[ 계속하려면 엔터 ]\n");
-				getchar();
-				getchar();
-				isStageClear = true;
-			}
 		}
 	}
+	// 적 2
+	if (!enemy2->isDead && mapManager.isEnemyHit(inPosX, inPosY, enemy2)) {
+		enemy2->TakeDamage(1);
+		isBlockingHit = true;
+		printf("[ 적2가 맞았습니다 : %d ]\n", enemy2->GetHP());
+		if (enemy2->isDead == true) {
+			mapManager.Map[enemy2->GetPosY()][enemy2->GetPosX()] = static_cast<int>(MTileState::Road);
+			enemy2->isDead = false;
+			enemy2->setDefault(20, 20); // 맵 밖으로 이동시켜 비활성화
+			mapManager.RemainEnemy--;
+		}
+	}
+
+	// --- 3. 부술 수 있는 벽 피격 처리 ---
 	if (mapManager.isBreakableHit(inPosX, inPosY)) {
 		if (mapManager.Map[inPosY][inPosX] == static_cast<int>(MTileState::SoftRock)) {
 			mapManager.Map[inPosY][inPosX] = static_cast<int>(MTileState::Road);
-			isHit = true;
+			isBlockingHit = true;
 		}
 	}
-	return isHit;
-}
 
+	// --- 4. 스테이지 클리어 처리 ---
+	// 모든 적을 처치했고, 아직 클리어 처리가 되지 않았다면 실행
+	if (mapManager.RemainEnemy <= 0 && !isStageClear) {
+		isStageClear = true; // 중복 실행 방지
+		printf("※모든 적을 처치했습니다\n");
+		printf("※스테이지 클리어!\n");
+		player->UpgradeChance++;
+		printf("업그레이드 횟수 : %d\n", player->UpgradeChance);
+		mapManager.PrintMap(player);
+		printf("[ 계속하려면 엔터 ]\n");
+		// 버퍼에 남아있을 수 있는 개행 문자를 처리하기 위해 getchar()를 두 번 호출
+		getchar();
+		getchar();
+	}
+
+	return isBlockingHit;
+}

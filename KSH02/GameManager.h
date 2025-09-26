@@ -15,30 +15,32 @@ public:
 	Player* player = new Player();
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
-	//Bomb* bomb = new Bomb();
-	std::vector<Bomb*> bombs;
-	std::vector<std::pair<int, int>> changedTiles;
+	std::vector<Bomb*> bombs; // 폭탄 여러개
 	void Clear(); //동적할당 해제
 	void StagePlay(int StageNum); //본게임
-	void EnemyYMove(Enemy* enemy);
-	void KeyChange(char& PlayerSelect);
+	void EnemyYMove(Enemy* enemy); 
+	void KeyChange(char& PlayerSelect); //입력받는 char int로 변환
+	
+
+	//플레이어 이동함수 4방향
 	void PlayerMoveXPlus();
 	void PlayerMoveXMinus();
 	void PlayerMoveYMinus();
 	void PlayerMoveYPlus();
-	void BombStateCheck(); //폭탄 시간감소및폭발 
-	void PlaceBomb(); //폭탄 배치 함수
-	void StageMenu();
+	//폭탄 배치 및 폭탄 별 시간감소 
+	void BombStateCheck(); 
+	void PlaceBomb();
 	void ExplosiveTileChange(Bomb* bomb); //폭발범위만큼 타일 바꿔줌
 	void ExplosiveTileRemove(Bomb* bomb); //폭발범위만큼 바꿔진 타일 원상태로
+	
+	void StageMenu();
+	//트리거용 bool변수
 	bool isHit(int inPosX, int inPosY);
-	bool isPresentBomb = false; //폭발트리거 폭탄존재확인 bool
-	bool WasPresentBomb = false; //폭발타일제거트리거  bool
 	bool isStageClear = false;
 	bool isStage1Clear = false;
 	bool isStage2Clear = false;
 	bool isStageFail = false;
-	bool OnBomb = false;
+
 
 };
 

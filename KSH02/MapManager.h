@@ -18,15 +18,22 @@ class MapManager
 {
 
 public:
+	//스테이지 1, 2 초기값 세팅
 	void InitializeMap1(Player* player,Enemy* enemy, Enemy* enemy2); // 초기맵생성
 	void InitializeMap2(Player* player,Enemy* enemy,Enemy* enemy2); // 초기맵생성
+	// 현재맵상태 프린트
+	void PrintMap(Player* player); 
+	//플레이어,적 이동가능한곳인지
+	bool CanMove(int posX, int posY) const; 
+	//폭탄이 부술수있는곳인지
+	bool CanBreak(int inPosX, int inPosY) const; 
+	//플레이어 맞았는지
+	bool isPlayerHit(int inPosX, int inPosY, Player* player) const;
+	//적 맞았는지
+	bool isEnemyHit(int inPosX, int inPosY, Enemy* enemy) const;
+	//부술수 있는 벽 맞았는지
 
-	void PrintMap(Player* player); // 현재맵상태 프린트
-	bool CanMove(int posX, int posY) const; //플레이어,적 이동가능한곳인지
-	bool CanBreak(int inPosX, int inPosY) const; //폭탄이 부술수있는곳인지
-	bool isPlayerHit(int inPosX, int inPosY, Player* player) const; //플레이어 맞았는지
-	bool isEnemyHit(int inPosX, int inPosY) const; //적 맞았는지
-	bool isBreakableHit(int inPosX, int inPosY) const; //부술수 있는 벽 맞았는지
+	bool isBreakableHit(int inPosX, int inPosY) const; 
 	const int Stage1RemainEnemy = 2;
 	const int Stage2RemainEnemy = 2;
 	int RemainEnemy;

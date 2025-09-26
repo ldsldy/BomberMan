@@ -16,7 +16,7 @@ public:
 	Player* player = new Player();
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
-	std::vector<Enemy*> Enemys;
+	//std::vector<Enemy*> Enemys;
 	std::vector<Bomb*> bombs; // 여러 개의 폭탄을 관리하는 벡터
 
 	// --- 게임 흐름 제어 함수 ---

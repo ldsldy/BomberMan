@@ -312,6 +312,7 @@ void GameManager::StageMenu()
 			}
 			printf("계속하려면 엔터\n");
 			getchar(); getchar();
+			//fflush(stdin);
 			break;
 		default: 
 			MenuNumber = 'E';

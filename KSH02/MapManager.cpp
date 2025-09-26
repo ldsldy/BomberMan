@@ -64,8 +64,14 @@ void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 }
 void MapManager::PrintMap(Player* player, Enemy* enemy1, Enemy* enemy2)
 {
+	printf("==================================================\n");
+	printf("                  B O M B E R M A N               \n");
+	printf("--------------------------------------------------\n");
+	printf(" [P] HP: %-2d | [E] 남은 적: %-2d | [B] 폭탄 수: %d/%d \n",
+		player->GetHP(), RemainEnemy, player->currentBombs, player->maxBombs);
+	printf("==================================================\n");
 
-	printf("[현재 플레이어의 체력 : %d]\n", player->GetHP());
+	
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (Map[i][j] == static_cast<int>(MTileState::Road)) {

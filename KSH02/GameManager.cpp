@@ -239,7 +239,7 @@ void GameManager::PlaceBomb()
 void GameManager::StageMenu()
 {
 	char MenuNumber = 0;
-	while (MenuNumber != -1)
+	while (MenuNumber != 'E'&& MenuNumber != 'e')
 	{
 		system("cls"); // 메뉴 표시 전 화면 지우기
 		isStageClear = false;
@@ -250,7 +250,7 @@ void GameManager::StageMenu()
 		printf("   [1] 스테이지 1 시작\n");
 		printf("   [2] 스테이지 2 시작\n");
 		printf("   [3] 업그레이드 (남은 횟수: %d)\n", player->UpgradeChance);
-		printf("   [-1] 게임 종료\n");
+		printf("   [E] 게임 종료\n");
 		printf("--------------------------------------------------\n");
 		printf(" > ");
 
@@ -282,7 +282,8 @@ void GameManager::StageMenu()
 			printf("계속하려면 엔터\n");
 			getchar(); getchar();
 			break;
-		default:
+		default: 
+			MenuNumber = 'E';
 			break;
 		}
 	}

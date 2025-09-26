@@ -11,36 +11,34 @@ public:
 
 	GameManager() = default;
 	~GameManager()=default;
+	// --- 게임 객체들 ---
 	MapManager mapManager;
 	Player* player = new Player();
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
-	std::vector<Bomb*> bombs; // 폭탄 여러개
-	void Clear(); //동적할당 해제
-	void StagePlay(int StageNum); //본게임
-	void EnemyYMove(Enemy* enemy); 
-	void KeyChange(char& PlayerSelect); //입력받는 char int로 변환
-	
+	std::vector<Bomb*> bombs; // 여러 개의 폭탄을 관리하는 벡터
 
-	//플레이어 이동함수 4방향
+	// --- 게임 흐름 제어 함수 ---
+	void Clear(); // 게임 종료 시 동적 할당된 메모리 해제
+	void StagePlay(int StageNum); // 실제 게임 플레이가 진행되는 함수
+	void StageMenu(); // 스테이지 선택 및 업그레이드 메뉴
+
+	// --- 객체별 행동 함수 ---
+	void EnemyYMove(Enemy* enemy);
+	void KeyChange(char& PlayerSelect); // 사용자 입력(char)을 내부 로직(int)으로 변환
 	void PlayerMoveXPlus();
 	void PlayerMoveXMinus();
 	void PlayerMoveYMinus();
 	void PlayerMoveYPlus();
-	//폭탄 배치 및 폭탄 별 시간감소 
-	void BombStateCheck(); 
-	void PlaceBomb();
-	void ExplosiveTileChange(Bomb* bomb); //폭발범위만큼 타일 바꿔줌
-	void ExplosiveTileRemove(Bomb* bomb); //폭발범위만큼 바꿔진 타일 원상태로
+	// --- 폭탄 관련 로직 함수 ---
+	void BombStateCheck(); // 모든 폭탄의 상태(시간 감소, 폭발 등)를 업데이트
+	void PlaceBomb();      // 플레이어 위치에 폭탄 설치
+	void ExplosiveTileChange(Bomb* bomb); // 폭발 범위의 타일을 폭발 효과로 변경
+	void ExplosiveTileRemove(Bomb* bomb); // 폭발 효과 타일을 다시 길로 변경
 	
-	void StageMenu();
-	//트리거용 bool변수
-	bool isHit(int inPosX, int inPosY);
-	bool isStageClear = false;
-	bool isStage1Clear = false;
-	bool isStage2Clear = false;
-	bool isStageFail = false;
-
-
+	// --- 상태 확인 및 트리거 ---
+	bool isHit(int inPosX, int inPosY); // 특정 좌표에 폭탄이 닿았을 때 충돌 처리
+	bool isStageClear = false;  // 스테이지 클리어 여부
+	bool isStageFail = false;   // 스테이지 실패 여부
 };
 

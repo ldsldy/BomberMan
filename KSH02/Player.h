@@ -1,22 +1,22 @@
 #pragma once
 #include "Actor.h"
-class Player
+class Player :public Actor
 {
 public:
 
 	Player() = default;
-	~Player();
+	virtual ~Player();
 
 
-	inline int ExpectedGetPosY() { return ExpectedPosY; }
-	inline int ExpectedGetPosX() { return ExpectedPosX; }
-	inline int GetPosX() { return PosX; }
-	inline int GetPosY() { return PosY; }
-	inline int GetHP() { return HP; }
-	
-	int TakeDamage(int indamage);
-	void PosXMove();
-	void PosYMove();
+	inline int ExpectedGetPosY() const { return ExpectedPosY; }
+	inline int ExpectedGetPosX() const { return ExpectedPosX; }
+	inline int GetPosX() override { return PosX; }
+	inline int GetPosY() override { return PosY; }
+	inline int GetHP() override { return HP; }
+	void setDefault(int x,int y) override; 
+	int TakeDamage(int indamage) override;
+	void PosXMove() override; 
+	void PosYMove() override; 
 	void ExpectedPosXMove(int inPosX);
 	void ExpectedPosYMove(int inPosY);
 	
@@ -28,7 +28,6 @@ private:
 	int PosX = 1;
 	int PosY= 1;
 	int HP = 5;
-	const int StartPosX = 1;
-	const int StartPosY = 1;
+	const int defaultHp = 5;
 };
 

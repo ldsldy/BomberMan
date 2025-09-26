@@ -1,10 +1,12 @@
 #include "MapManager.h"
 #include <stdio.h>
 
-//stage1맵 이니셜라이즈
-void MapManager::InitializeMap1()
+//stage1 이니셜라이즈
+void MapManager::InitializeMap1(Player* player, Enemy* enemy, Enemy* enemy2)
 {
-
+	player->setDefault(1,1);
+	enemy->setDefault(9,9);
+	enemy2->setDefault(5,1);
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
@@ -21,11 +23,16 @@ void MapManager::InitializeMap1()
 			}
 		}
 	}
+	Map[player->GetPosY()][player->GetPosX()] = static_cast<int>(MTileState::Player);
+	Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
+	Map[enemy2->GetPosY()][enemy2->GetPosX()] = static_cast<int>(MTileState::Enemy);
 }
 //stage2 이니셜라이즈
-void MapManager::InitializeMap2()
+void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 {
-	
+	player->setDefault(1,1);
+	enemy->setDefault(9,9);
+	enemy2->setDefault(1,8);
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
@@ -45,14 +52,14 @@ void MapManager::InitializeMap2()
 			}
 		}
 	}
+	Map[player->GetPosY()][player->GetPosX()] = static_cast<int>(MTileState::Player);
+	Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
+	Map[enemy2->GetPosY()][enemy2->GetPosX()] = static_cast<int>(MTileState::Enemy);
 }
 void MapManager::PrintMap(Player* player, Enemy* enemy)
 {
-	//플레이어 이동위치 동기화
-	Map[player->GetPosY()][player->GetPosX()] = static_cast<int>(MTileState::Player);
-	Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
 
-
+	printf("[현재 플레이어의 체력 : %d]\n", player->GetHP());
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (Map[i][j] == static_cast<int>(MTileState::Road)) {
@@ -64,17 +71,11 @@ void MapManager::PrintMap(Player* player, Enemy* enemy)
 			else if (Map[i][j] == static_cast<int>(MTileState::SoftRock)) {
 				printf("▣ ");
 			}
-			else if (Map[i][j] == static_cast<int>(MTileState::UnbreakableRock)) {
-				printf("● ");
-			}
 			else if (Map[i][j] == static_cast<int>(MTileState::Bomb)) {
 				printf("★ ");
 			}
 			else if (Map[i][j] == static_cast<int>(MTileState::HitBombEffect)) {
 				printf("◆ ");
-			}
-			else if (Map[i][j] == static_cast<int>(MTileState::NotHitBombEffect)) {
-				printf("◇ ");
 			}
 			else if (Map[i][j] == static_cast<int>(MTileState::Player)) {
 				printf("P  ");
@@ -92,40 +93,6 @@ void MapManager::PrintMap(Player* player, Enemy* enemy)
 	printf("\n");
 }
 
-void MapManager::TileStateChange(int posX,int posY, int TileState)
-{
-	if (static_cast<int>(MTileState::Bomb) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if(static_cast<int>(MTileState::Wall) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::SoftRock) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::UnbreakableRock) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::Bomb) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::HitBombEffect) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::NotHitBombEffect) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::Player) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else if (static_cast<int>(MTileState::Enemy) == TileState) {
-		Map[posY][posX] = TileState;
-	}
-	else {
-		//오류
-	}
-
-}
 
 bool MapManager::CanMove(int posX, int posY) const
 {

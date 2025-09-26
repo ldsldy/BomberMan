@@ -2,7 +2,13 @@
 
 Player::~Player()
 {
-	
+}
+
+void Player::setDefault(int x, int y)
+{
+	PosX = x;
+	PosY = y;
+	HP = defaultHp;
 }
 
 int Player::TakeDamage(int indamage)

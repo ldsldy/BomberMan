@@ -16,6 +16,7 @@ public:
 	Player* player = new Player();
 	Enemy* enemy = new Enemy();
 	Enemy* enemy2 = new Enemy();
+	std::vector<Enemy*> Enemys;
 	std::vector<Bomb*> bombs; // 여러 개의 폭탄을 관리하는 벡터
 
 	// --- 게임 흐름 제어 함수 ---
@@ -25,6 +26,7 @@ public:
 
 	// --- 객체별 행동 함수 ---
 	void EnemyYMove(Enemy* enemy);
+	void EnemyXMove(Enemy* enemy);
 	void KeyChange(char& PlayerSelect); // 사용자 입력(char)을 내부 로직(int)으로 변환
 	void PlayerMoveXPlus();
 	void PlayerMoveXMinus();

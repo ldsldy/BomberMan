@@ -36,7 +36,7 @@ void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 	RemainEnemy = Stage2RemainEnemy;
 	player->setDefault(1,1);
 	enemy->setDefault(9,9);
-	enemy2->setDefault(1,8);
+	enemy2->setDefault(1,5);
 	enemy->isDead = false;
 	enemy2->isDead = false;
 	for (int i = 0; i < MapSize; i++) {
@@ -44,18 +44,16 @@ void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
 				Map[i][j] = static_cast<int>(MTileState::Wall);
 			}
-			else if ((i == 3 || i == 7) && j % 2 == 0) {
+			else if (i%2==0&&j%2!=0) {
 				Map[i][j] = static_cast<int>(MTileState::Wall);
 			}
-			else if ((i == 1 || i == 5 || i == 9) && j % 2 != 0) {
-				Map[i][j] = static_cast<int>(MTileState::Wall);
-			}
-			else if (i % 2 == 0 && j % 2 == 0) {
+			else if(i % 2 == 0 && j % 2 == 0){
 				Map[i][j] = static_cast<int>(MTileState::SoftRock);
 			}
 			else {
 				Map[i][j] = static_cast<int>(MTileState::Road);
 			}
+			
 		}
 	}
 	Map[player->GetPosY()][player->GetPosX()] = static_cast<int>(MTileState::Player);

@@ -75,8 +75,15 @@ void GameManager::StagePlay(int StageNum)
 		default: printf("유효하지 않은 메뉴 번호입니다.\n");
 			break;
 		}
-		EnemyYMove(enemy);
-		EnemyYMove(enemy2);
+		if (StageNum == 1) {
+			EnemyYMove(enemy);
+			EnemyYMove(enemy2);
+		}
+		else if (StageNum == 2) {
+			EnemyXMove(enemy);
+			EnemyXMove(enemy2);
+		}
+		
 	}
 }
 
@@ -97,6 +104,30 @@ void GameManager::EnemyYMove(Enemy* enemy)
 		if (mapManager.CanMove(enemy->GetPosX(), enemy->GetPosY() + 1)) {
 			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Road);
 			enemy->PosYMove(+1);
+			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
+		}
+		else {
+			enemy->MoveDir = true;
+		}
+	}
+}
+void GameManager::EnemyXMove(Enemy* enemy)
+{
+	//false 는 -x방향 true는 +x방향
+	if (enemy->MoveDir) {
+		if (mapManager.CanMove(enemy->GetPosX()-1, enemy->GetPosY())) {
+			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Road);
+			enemy->PosXMove(-1);
+			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
+		}
+		else {
+			enemy->MoveDir = false;
+		}
+	}
+	else {
+		if (mapManager.CanMove(enemy->GetPosX()+1, enemy->GetPosY())) {
+			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Road);
+			enemy->PosXMove(+1);
 			mapManager.Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
 		}
 		else {
@@ -297,7 +328,7 @@ void GameManager::ExplosiveTileChange(Bomb* bomb)
 	if (mapManager.CanBreak(inPosX, inPosY)) {
 		isHit(inPosX, inPosY);
 		mapManager.Map[inPosY][inPosX] = static_cast<int>(MTileState::HitBombEffect);
-		bomb->changedTiles.push_back({ inPosX, inPosY });
+		bomb->changedTiles.push_back({ inPosX, inPosY });//바꿨던 타일  페어 x,y쌍으로 저장
 	}
 
 	for (int i = 1; i <= bomb->ExplosiveRange; i++) {

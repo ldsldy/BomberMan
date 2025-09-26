@@ -30,5 +30,12 @@ public:
 	int maxBombs = 1;         // 설치 가능한 최대 폭탄 개수
 	int currentBombs = 0;     // 현재 설치된 폭탄 개수
 	int bombRange = 2;        // 폭탄의 폭발 범위
+private:
+	int ExpectedPosX = 1;
+	int ExpectedPosY = 1;
+	int PosX = 1;
+	int PosY = 1;
+	int HP = 5;
+	const int defaultHp = 5; // 기본 체력
 };
 

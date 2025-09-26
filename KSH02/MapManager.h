@@ -28,8 +28,6 @@ public:
 	bool isPlayerHit(int inPosX, int inPosY, Player* player) const; // 플레이어가 맞았는지 확인
 	bool isEnemyHit(int inPosX, int inPosY, Enemy* enemy) const;   // 적이 맞았는지 확인
 	bool isBreakableHit(int inPosX, int inPosY) const; // 부술 수 있는 벽이 맞았는지 확인
-
-	bool isBreakableHit(int inPosX, int inPosY) const; 
 	// --- 맵 데이터 ---
 	const int Stage1RemainEnemy = 2; // 스테이지 1의 적 수
 	const int Stage2RemainEnemy = 2; // 스테이지 2의 적 수

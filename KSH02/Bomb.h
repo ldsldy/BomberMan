@@ -5,7 +5,11 @@ public:
 	Bomb() = default;
 	bool isExplosive();
 	
-
+	enum class BombState
+	{
+		Ticking,
+		Exploding
+	};
 
 	int PosX = -1;
 	int PosY = -1;
@@ -14,5 +18,6 @@ public:
 	int ExplosiveRemoveTime = 3;
 	const int DefaultExplosiveRemoveTime = 3;
 	int ExplosiveRange = 2;
+	BombState state = BombState::Ticking;
 };
 

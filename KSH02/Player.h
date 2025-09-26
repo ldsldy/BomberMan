@@ -21,7 +21,9 @@ public:
 	void ExpectedPosYMove(int inPosY);
 	
 	bool isDead = false;
-	int UpgradeChance = 0;
+	int UpgradeChance = 1;
+	int maxBombs = 2; // ÃÖ´ë ÆøÅº °³¼ö
+	int currentBombs = 0; // ÇöÀç ¼³Ä¡µÈ ÆøÅº °³¼ö
 private:
 	int ExpectedPosX =1;
 	int ExpectedPosY =1;

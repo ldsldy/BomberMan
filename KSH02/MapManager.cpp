@@ -4,9 +4,12 @@
 //stage1 이니셜라이즈
 void MapManager::InitializeMap1(Player* player, Enemy* enemy, Enemy* enemy2)
 {
+	RemainEnemy = Stage1RemainEnemy;
 	player->setDefault(1,1);
-	enemy->setDefault(9,9);
+	enemy->setDefault(1,9);
 	enemy2->setDefault(5,1);
+	enemy->isDead = false;
+	enemy2->isDead = false;
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
@@ -30,9 +33,12 @@ void MapManager::InitializeMap1(Player* player, Enemy* enemy, Enemy* enemy2)
 //stage2 이니셜라이즈
 void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 {
+	RemainEnemy = Stage2RemainEnemy;
 	player->setDefault(1,1);
 	enemy->setDefault(9,9);
 	enemy2->setDefault(1,8);
+	enemy->isDead = false;
+	enemy2->isDead = false;
 	for (int i = 0; i < MapSize; i++) {
 		for (int j = 0; j < MapSize; j++) {
 			if (i == MapSize - 1 || j == MapSize - 1 || i == 0 || j == 0) {
@@ -56,7 +62,7 @@ void MapManager::InitializeMap2(Player* player, Enemy* enemy, Enemy* enemy2)
 	Map[enemy->GetPosY()][enemy->GetPosX()] = static_cast<int>(MTileState::Enemy);
 	Map[enemy2->GetPosY()][enemy2->GetPosX()] = static_cast<int>(MTileState::Enemy);
 }
-void MapManager::PrintMap(Player* player, Enemy* enemy)
+void MapManager::PrintMap(Player* player)
 {
 
 	printf("[현재 플레이어의 체력 : %d]\n", player->GetHP());
@@ -123,7 +129,8 @@ bool MapManager::isPlayerHit(int inPosX, int inPosY ,Player* player) const
 {
 	bool isHit = false;
 
-	if ((player->ExpectedGetPosX() == inPosX)&& (player->ExpectedGetPosY() == inPosY)) {
+	
+	if ((player->GetPosX() == inPosX) && (player->GetPosY() == inPosY)) {
 		isHit = true;
 	}
 

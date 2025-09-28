@@ -10,6 +10,7 @@ enum class MTileState
 	SoftRock = 10,    // 부술 수 있는 벽
 	Bomb = 20,        // 폭탄
 	HitBombEffect = 21, // 폭발 효과
+	ExplosiveWarning = 30, // 폭발 경고
 	Player = 50,      // 플레이어
 	Enemy = 60        // 적
 };

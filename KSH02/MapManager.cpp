@@ -84,6 +84,9 @@ void MapManager::PrintMap(Player* player, Enemy* enemy1, Enemy* enemy2)
 			else if (Map[i][j] == static_cast<int>(MTileState::Bomb)) {
 				printf("¡Ú ");
 			}
+			else if (Map[i][j] == static_cast<int>(MTileState::ExplosiveWarning)) {
+				printf("!  ");
+			}
 			else if (Map[i][j] == static_cast<int>(MTileState::HitBombEffect)) {
 				printf("¡ß ");
 			}
@@ -108,7 +111,8 @@ bool MapManager::CanMove(int posX, int posY) const
 {
 	bool CanMove = false;
 
-	if (Map[posY][posX] == static_cast<int>(MTileState::Road)) {
+	if (Map[posY][posX] == static_cast<int>(MTileState::Road)
+		|| Map[posY][posX] == static_cast<int>(MTileState::ExplosiveWarning)) {
 		CanMove = true;
 	}
 	else {

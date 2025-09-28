@@ -34,7 +34,10 @@ public:
 	void PlayerMoveYPlus();
 	// --- 폭탄 관련 로직 함수 ---
 	void BombStateCheck(); // 모든 폭탄의 상태(시간 감소, 폭발 등)를 업데이트
-	void PlaceBomb();      // 플레이어 위치에 폭탄 설치
+	void PlaceBomb();
+	void PreviewExplosion(Bomb* bomb);
+	void ExplosiveRangeInDirection(Bomb* bomb, int StartX, int StartY, int DirX, int DirY); // 특정 방향으로 폭발 범위 처리
+	// 플레이어 위치에 폭탄 설치
 	void ExplosiveTileChange(Bomb* bomb); // 폭발 범위의 타일을 폭발 효과로 변경
 	void ExplosiveTileRemove(Bomb* bomb); // 폭발 효과 타일을 다시 길로 변경
 	
@@ -42,5 +45,9 @@ public:
 	bool isHit(int inPosX, int inPosY); // 특정 좌표에 폭탄이 닿았을 때 충돌 처리
 	bool isStageClear = false;  // 스테이지 클리어 여부
 	bool isStageFail = false;   // 스테이지 실패 여부
+
+private:
+	std::map<std::pair<int, int>, int> StackedExplosiveEffectMap; // 타일 좌표와 중첩된 횟수 저장
+	//std::map<std::set<Bomb*>, std::vector<std::pair<int, int>>> BombRangeMap; // 각 폭탄이 영향을 주는 타일의 범위 저장
 };
 

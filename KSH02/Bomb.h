@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>   
 #include <utility>  
+#include <map>
+#include <set>
 class Bomb
 {
 public:
@@ -25,4 +27,3 @@ public:
 	BombState state = BombState::Ticking; // 현재 폭탄 상태
 	std::vector<std::pair<int, int>> changedTiles; // 폭발로 인해 변경된 타일 좌표 저장;
 };
-
